@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>The Aruna Issue · Vol. 25</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F3EDE3;
+    --paper: #FBF8F3;
+    --ink: #1B1714;
+    --orange: #D9822B;
+    --muted: #7A6E63;
+    --serif: "Bodoni Moda", Didot, "Times New Roman", serif;
+    --sans: "Montserrat", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+  img { display: block; max-width: 100%; }
+
+  /* COVER */
+  .cover {
+    min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between;
+    padding: 4vh 6vw; text-align: center; position: relative; overflow: hidden;
+    background: var(--ink); color: var(--cream);
+  }
+  .cover-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .65; }
+  .cover > *:not(.cover-photo) { position: relative; z-index: 1; }
+  .masthead { font-family: var(--serif); font-weight: 400; font-size: clamp(4rem, 19vw, 13rem); line-height: .9; letter-spacing: -.02em; }
+  .dateline { display: flex; justify-content: space-between; font-size: .8rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin-top: 1rem; }
+  .cover-title { margin-bottom: 4vh; }
+  .cover-title .kicker { font-family: var(--serif); color: var(--orange); font-size: clamp(2rem, 7vw, 4rem); letter-spacing: .08em; }
+  .cover-title .name { font-size: clamp(1.1rem, 3.5vw, 1.8rem); letter-spacing: .25em; text-transform: uppercase; }
+  .scroll-hint { font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; opacity: .8; animation: bob 2s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(6px); } }
+
+  /* SECTIONS */
+  section { max-width: 1000px; margin: 0 auto; padding: 12vh 6vw; }
+  .section-label { font-size: .75rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
+  h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; margin-bottom: 2rem; }
+  h2 em { color: var(--orange); }
+
+  /* Editor's letter */
+  .letter { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+  .letter p { font-family: var(--serif); font-size: 1.2rem; margin-bottom: 1.2rem; }
+  .letter p:first-of-type::first-letter { float: left; font-size: 4.2rem; line-height: .8; padding: .35rem .5rem 0 0; color: var(--orange); }
+  .signature { font-family: var(--sans) !important; font-size: .85rem !important; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+  /* 25 things */
+  .things { background: var(--cream); max-width: none; }
+  .things-inner { max-width: 1000px; margin: 0 auto; }
+  .things ol { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0 3rem; }
+  .things li { display: flex; gap: 1rem; padding: 1.1rem 0; border-top: 1px solid rgba(27,23,20,.15); }
+  .things .num { font-family: var(--serif); font-size: 1.8rem; line-height: 1; color: var(--orange); min-width: 2.4rem; }
+
+  /* Gallery */
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+  .gallery figure { aspect-ratio: 4 / 5; overflow: hidden; background: var(--cream); position: relative; }
+  .gallery figure:nth-child(3n+1) { grid-row: span 2; aspect-ratio: auto; }
+  .gallery img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .gallery figure:hover img { transform: scale(1.04); }
+  .gallery figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: .8rem; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.6)); }
+  .placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; text-align: center; padding: 1rem; font-size: .75rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); border: 1px dashed var(--muted); }
+
+  /* Closing */
+  .closing { text-align: center; }
+  .closing h2 { font-size: clamp(3rem, 10vw, 7rem); }
+  .closing p { color: var(--muted); letter-spacing: .2em; text-transform: uppercase; font-size: .8rem; }
+
+  /* Confetti */
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+
+  /* Fade-in on scroll */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .9s ease, transform .9s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } .scroll-hint { animation: none; } }
+</style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<!-- COVER -->
+<header class="cover">
+  <!--  cover.jpg -->
+  <img class="cover-photo" src="images/cover.jpg" alt="" onerror="this.remove()">
+  <div>
+    <div class="masthead">ARUNA</div>
+    <div class="dateline"><span>2nd Dec 2026</span><span>Vol. 25</span></div>
+  </div>
+  <div class="cover-title">
+    <div class="kicker">The Birthday Issue</div>
+    <div class="name">Aruna Sherma</div>
+  </div>
+  <div class="scroll-hint">Scroll ↓</div>
+</header>
+
+<!-- EDITOR'S LETTER  -->
+<section class="letter reveal">
+  <div>
+    <div class="section-label">Editor's Letter</div>
+    <h2>A few words <em>for you</em></h2>
+    <!-- personal message. Add or remove <p> paragraphs -->
+    <p>Write your personal birthday message here. This first paragraph gets a large orange first letter, just like a real magazine feature.</p>
+    <p>A second paragraph for a memory, a joke only she will get, or what this year has meant.</p>
+    <p class="signature">— With love, [your name]</p>
+  </div>
+</section>
+
+<!--  25 THINGS -->
+<section class="things">
+  <div class="things-inner reveal">
+    <div class="section-label">The List</div>
+    <h2>25 Things We <em>Love</em> About Her</h2>
+    <ol id="things-list"></ol>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="reveal">
+  <div class="section-label">The Shoot</div>
+  <h2>Moments <em>Worth</em> Framing</h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing reveal">
+  <h2>Happy <em>25th</em></h2>
+  <p>Vol. 25 · No. 2 · December 2026</p>
+</section>
+
+<script>
+  
+  // The 25 things we love about Aruna 
+  const THINGS = [
+    "Thing one", "Thing two", "Thing three", "Thing four", "Thing five",
+    "Thing six", "Thing seven", "Thing eight", "Thing nine", "Thing ten",
+    "Thing eleven", "Thing twelve", "Thing thirteen", "Thing fourteen", "Thing fifteen",
+    "Thing sixteen", "Thing seventeen", "Thing eighteen", "Thing nineteen", "Thing twenty",
+    "Thing twenty-one", "Thing twenty-two", "Thing twenty-three", "Thing twenty-four", "Thing twenty-five"
+  ];
+
+  // Photos: put files in the "images" folder and list them.
+  // caption is optional — use "" for none.
+  const PHOTOS = [
+    { file: "1.jpg", caption: "" },
+    { file: "2.jpg", caption: "" },
+    { file: "3.jpg", caption: "" },
+    { file: "4.jpg", caption: "" },
+    { file: "5.jpg", caption: "" },
+    { file: "6.jpg", caption: "" }
+  ];
+
+  
+
+  // Build the list
+  const list = document.getElementById("things-list");
+  THINGS.forEach((text, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="num">${String(i + 1).padStart(2, "0")}</span><span></span>`;
+    li.lastChild.textContent = text;
+    list.appendChild(li);
+  });
+
+  // Build the gallery (shows a dashed placeholder if a photo is missing)
+  const gallery = document.getElementById("gallery");
+  PHOTOS.forEach(({ file, caption }) => {
+    const fig = document.createElement("figure");
+    const img = document.createElement("img");
+    img.src = "images/" + file;
+    img.alt = caption || "Photo";
+    img.loading = "lazy";
+    img.onerror = () => { img.replaceWith(Object.assign(document.createElement("div"), { className: "placeholder", textContent: "images/" + file })); };
+    fig.appendChild(img);
+    if (caption) {
+      const fc = document.createElement("figcaption");
+      fc.textContent = caption;
+      fig.appendChild(fc);
+    }
+    gallery.appendChild(fig);
+  });
+
+  // Fade sections in while scrolling
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+  // Short confetti burst in the cover colours when the page opens
+  (function confetti() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const c = document.getElementById("confetti"), ctx = c.getContext("2d");
+    const resize = () => { c.width = innerWidth; c.height = innerHeight; };
+    resize(); addEventListener("resize", resize);
+    const colors = ["#D9822B", "#F3EDE3", "#C9A15B", "#1B1714"];
+    const pieces = Array.from({ length: 140 }, () => ({
+      x: Math.random() * c.width, y: -20 - Math.random() * c.height,
+      w: 4 + Math.random() * 6, h: 8 + Math.random() * 8,
+      vy: 2 + Math.random() * 3, vx: -1 + Math.random() * 2,
+      rot: Math.random() * Math.PI, vr: -0.1 + Math.random() * 0.2,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    }));
+    const start = performance.now();
+    (function frame(t) {
+      ctx.clearRect(0, 0, c.width, c.height);
+      const fade = Math.max(0, 1 - (t - start - 3500) / 1500);  // fade out after ~3.5s
+      ctx.globalAlpha = fade;
+      pieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      });
+      if (fade > 0) requestAnimationFrame(frame); else c.remove();
+    })(start);
+  })();
+</script>
+</body>
+</html>
